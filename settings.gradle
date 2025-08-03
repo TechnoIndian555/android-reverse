@@ -9,4 +9,4 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "aXML"
-include ':library'
+include ':Parser'
