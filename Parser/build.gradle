@@ -22,13 +22,8 @@ android {
 dependencies {
 }
 
-afterEvaluate {
-     tasks.register("exportJar", Jar) {
-        archiveBaseName.set("axml")
-        archiveVersion.set("")
-        from android.libraryVariants.find { it.name == "release" }
-            .javaCompileProvider.get()
-            .destinationDirectory
-        destinationDirectory.set(file("$buildDir/libs"))
-    }
+task exportJar(type: Jar) {
+    from sourceSets.main.output
+    archiveBaseName.set("parser") // या कोई भी नाम जो तुम रखना चाहो
+    destinationDirectory.set(file("$buildDir/libs"))
 }
