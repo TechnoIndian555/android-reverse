@@ -32,7 +32,7 @@ task exportJar(type: Jar) {
     }
 
     from zipTree(classesJar)
-    archiveBaseName.set("Parser")
-    archiveVersion.set("")  // No version in file name
+    archiveBaseName.set("parser")
+    archiveVersion.set("") // removes -version from filename
     destinationDirectory.set(file("$buildDir/libs"))
 }
