@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace 'luyao.parser.Main'
+    namespace 'luyao.parser'
     compileSdk 34
 
     defaultConfig {
@@ -25,21 +25,19 @@ dependencies {
 task exportJar(type: Jar) {
     dependsOn 'assembleRelease'
 
-    def classesJar = file("$buildDir/intermediates/aar_main_jar/release/classes.jar")
-
-    if (!classesJar.exists()) {
-        throw new GradleException("classes.jar not found. Run ':Parser:assembleRelease' first.")
-    }
-
-    // Extract and filter at configuration time
-    from {
-        zipTree(classesJar).matching {
-            include 'android/util/**'
-            include 'luyao/parser/**'
-        }
-    }
-
     archiveBaseName.set("parser")
     archiveVersion.set("")
     destinationDirectory.set(file("$buildDir/libs"))
+
+    doFirst {
+        def classesJar = file("$buildDir/intermediates/aar_main_jar/release/classes.jar")
+        if (!classesJar.exists()) {
+            throw new GradleException("classes.jar not found. Run ':Parser:assembleRelease' first.")
+        }
+
+        from(zipTree(classesJar).matching {
+            include 'android/util/**'
+            include 'luyao/parser/**'
+          })
+    }
 }
