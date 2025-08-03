@@ -25,14 +25,17 @@ dependencies {
 task exportJar(type: Jar) {
     dependsOn 'assembleRelease'
 
-    def classesJar = file("$buildDir/intermediates/aar_main_jar/release/classes.jar")
+    doFirst {
+        def classesJar = file("$buildDir/intermediates/aar_main_jar/release/classes.jar")
 
-    if (!classesJar.exists()) {
-        throw new GradleException("classes.jar not found. Make sure assembleRelease runs successfully.")
+        if (!classesJar.exists()) {
+            throw new GradleException("classes.jar not found. Run ':Parser:assembleRelease' first.")
+        }
+
+        from zipTree(classesJar)
     }
 
-    from zipTree(classesJar)
     archiveBaseName.set("parser")
-    archiveVersion.set("") // removes -version from filename
+    archiveVersion.set("") // no -version suffix
     destinationDirectory.set(file("$buildDir/libs"))
 }
