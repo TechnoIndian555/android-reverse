@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace 'com.apk.axml'
+    namespace 'luyao.parser.Main'
     compileSdk 34
 
     defaultConfig {
