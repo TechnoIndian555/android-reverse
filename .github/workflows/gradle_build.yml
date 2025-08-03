@@ -10,23 +10,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Set up JDK 11
-      uses: actions/setup-java@v4
-      with:
-        distribution: 'temurin'
-        java-version: '11'
+      - name: Set up JDK 11
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '11'
 
-    - name: Make gradlew executable
-      run: chmod +x ./gradlew
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
 
-    - name: Build JAR
-      run: ./gradlew :library:exportJar
+      - name: Assemble Release
+        run: ./gradlew :Parser:assembleRelease
 
-    - name: Upload JAR
-      uses: actions/upload-artifact@v4
-      with:
-        name: release-jar
-        path: Parser/build/libs/*.jar
+      - name: Export JAR
+        run: ./gradlew :Parser:exportJar
+
+      - name: Upload JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-jar
+          path: Parser/build/libs/*.jar
