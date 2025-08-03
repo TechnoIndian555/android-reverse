@@ -32,10 +32,14 @@ task exportJar(type: Jar) {
             throw new GradleException("classes.jar not found. Run ':Parser:assembleRelease' first.")
         }
 
-        from zipTree(classesJar)
+        // Filter: include only needed packages
+        from (zipTree(classesJar)) {
+            include 'android/util/**'
+            include 'luyao/parser/**'
+        }
     }
 
     archiveBaseName.set("parser")
-    archiveVersion.set("") // no -version suffix
+    archiveVersion.set("") // no version suffix
     destinationDirectory.set(file("$buildDir/libs"))
 }
