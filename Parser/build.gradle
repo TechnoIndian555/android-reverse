@@ -23,7 +23,16 @@ dependencies {
 }
 
 task exportJar(type: Jar) {
-    from sourceSets.main.output
-    archiveBaseName.set("parser") // या कोई भी नाम जो तुम रखना चाहो
+    dependsOn 'assembleRelease'
+
+    def classesJar = file("$buildDir/intermediates/aar_main_jar/release/classes.jar")
+
+    if (!classesJar.exists()) {
+        throw new GradleException("classes.jar not found. Make sure assembleRelease runs successfully.")
+    }
+
+    from zipTree(classesJar)
+    archiveBaseName.set("Parser")
+    archiveVersion.set("")  // No version in file name
     destinationDirectory.set(file("$buildDir/libs"))
 }
