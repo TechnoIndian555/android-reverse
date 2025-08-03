@@ -25,21 +25,21 @@ dependencies {
 task exportJar(type: Jar) {
     dependsOn 'assembleRelease'
 
-    doFirst {
-        def classesJar = file("$buildDir/intermediates/aar_main_jar/release/classes.jar")
+    def classesJar = file("$buildDir/intermediates/aar_main_jar/release/classes.jar")
 
-        if (!classesJar.exists()) {
-            throw new GradleException("classes.jar not found. Run ':Parser:assembleRelease' first.")
-        }
+    if (!classesJar.exists()) {
+        throw new GradleException("classes.jar not found. Run ':Parser:assembleRelease' first.")
+    }
 
-        // Filter: include only needed packages
-        from (zipTree(classesJar)) {
+    // Extract and filter at configuration time
+    from {
+        zipTree(classesJar).matching {
             include 'android/util/**'
             include 'luyao/parser/**'
         }
     }
 
     archiveBaseName.set("parser")
-    archiveVersion.set("") // no version suffix
+    archiveVersion.set("")
     destinationDirectory.set(file("$buildDir/libs"))
 }
